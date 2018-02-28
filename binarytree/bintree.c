@@ -16,6 +16,8 @@ struct tree * create_tree(void * data, int size, int len, Compare cmp) {
 }
 
 struct tree * insert_leave(struct tree * root, void * data, Compare cmp) {
+	// FIXME: this is more complicated, sometimes we have to replace nodes and stuff 
+	// (it's not always new leaves)
 	struct tree * newnode = (struct tree *)malloc(sizeof(struct tree));
 	newnode->data = data;
 	newnode->left = NULL;
@@ -101,4 +103,8 @@ void print_tree(struct tree * root, void (*print_func)(const void*)) {
 
 void print_int(void * data) {
 	printf("%d\n", *(int *)data);
+}
+
+void print_double(void * data) {
+	printf("%f\n", *(double *)data);
 }
