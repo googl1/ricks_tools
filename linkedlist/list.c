@@ -158,3 +158,10 @@ struct list * find(struct list * head, int pos) {
 	}
 	return node;
 }
+
+void delete_list(struct list * head) {
+	if (head == NULL)
+		return;
+	delete_list(head->next);
+	free(head);
+}

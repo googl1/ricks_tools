@@ -20,6 +20,7 @@ struct list * push (struct list * head, void * data);
 struct list * insert(struct list * head, void * data, int pos);
 struct list * delete_node(struct list * head, int pos);
 struct list * find(struct list * head, int pos);
+void delete_list(struct list * head);
 
 #endif // LIST_H
 
