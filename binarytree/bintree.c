@@ -1,5 +1,7 @@
 #include "bintree.h"
 
+static Compare cmp_fun;
+
 int cmp_int(const int *a, const int *b){
     return *a < *b ? -1 : *a > *b;
 }
@@ -43,34 +45,34 @@ int vercmp(char *v1, char *v2) {
 	return 0;
 }
 
-struct tree * create_tree(void * data, int size, int len, Compare cmp) {
+struct tree * create_tree(void * data, const int size, const int len, const Compare cmp) {
 	struct tree * root = NULL;
 	for (int i = 0; i < len; i++)
-		root = insert_node(root, data + i * size, cmp);
+		insert_node(&root, (void *)data + i * size, cmp);
 	return root;
 }
 
-struct tree * insert_node(struct tree * root, void * data, Compare cmp) {
+void insert_node(struct tree ** root, void * data, const Compare cmp) {
 	struct tree * newnode = (struct tree *)malloc(sizeof(struct tree));
 	newnode->data = data;
 	newnode->left = NULL;
 	newnode->right = NULL;
-	if (root == NULL) {
+	if (*root == NULL) {
 		// create new tree
-		root = newnode;
+		*root = newnode;
 		cmp_fun = cmp;
-		return root;
+		return;
 	}
-	struct tree * parent = find_parent(root, data);
+	struct tree * parent = find_parent(*root, data);
 	if (parent == NULL) {
 		free(newnode);
-		return root;
+		return;
 	}
 	if (cmp(data, parent->data) < 0)
 		parent->left = newnode;
 	else if (cmp(data, parent->data) > 0)
 		parent->right = newnode;
-	return root;
+	return;
 }
 
 struct tree * find_parent(struct tree * root, void * data) {
@@ -99,33 +101,33 @@ void * min_value(struct tree * root) {
 	return root->data;
 }
 
-struct tree * tree_delete(struct tree * root, void * data) {
-	struct tree * parent = find_parent(root, data);
-	struct tree * node = find_node(root, data);
+void tree_delete(struct tree ** root, void * data) {
+	struct tree * parent = find_parent(*root, data);
+	struct tree * node = find_node(*root, data);
 	if (node == NULL) {
 		printf("tried to delete node %d, but not found\n", *(int *)data);
-		return root;
+		return;
 	}
 	if (node->left != NULL && node->right != NULL) {
 		// replace this nodes value with the minimal one of the right subtree
 		// and remove the latter
 		node->data = min_value(node->right);
-		root = tree_delete(node->right, node->data);
-		return root;
+		tree_delete(&(node->right), node->data);
+		return;
 	}
 	struct tree * child = NULL;
 	if (node->left != NULL)
 		child = node->left;
 	else if (node->right != NULL)
 		child = node->right;
-	if (root == node)
-		root = child;
+	if (*root == node)
+		*root = child;
 	else if (parent->left == node)
 		parent->left = child;
 	else
 		parent->right = child;
 	free(node);
-	return root;
+	return;
 }
 
 struct tree * find_node(struct tree * root, void * data) {
@@ -190,7 +192,7 @@ struct list * tolist(struct tree * root) {
 	list->next = NULL;
 	tree = inorder(root, tree);
 	while (tree != NULL) {
-		list = append(list, tree->data);
+		append(&list, tree->data);
 		tree = inorder(root, tree);
 	}
 	return list;
@@ -199,10 +201,11 @@ struct list * tolist(struct tree * root) {
 struct tree * make_tree(struct list * head, Compare cmp) {
 	if (head == NULL) 
 		return NULL;
-	struct tree * root = insert_node(NULL, head->data, cmp);
+	struct tree * root = NULL;
+	insert_node(&root, head->data, cmp);
 	while (head->next != NULL) {
 		head = head->next;
-		root = insert_node(root, head->data, cmp);
+		insert_node(&root, head->data, cmp);
 	}
 	return root;
 }

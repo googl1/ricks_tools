@@ -23,18 +23,20 @@ int main(int argn, char **args)
 	   node = node->next;
    }
    
-   head = reverse(head);
+   reverse_list(&head);
+
+   node =head;
 // list contains 3,2,1
 
    int data_0 = 0;
    int data_4 = 4;
-   head = append(head, &data_0);
-   head = push(head, &data_4);
+   append(&head, &data_0);
+   push(&head, &data_4);
    // list contains 4,3,2,1,0
    
-   head = reverse(head);
+   reverse_list(&head);
    // list contains 0,1,2,3,4
-   head = pop(head);
+   assert(0 == *(int *)pop(&head));
    // list contains 1,2,3,4
 
    node = head;
@@ -43,10 +45,10 @@ int main(int argn, char **args)
 	   node = node->next;
    }
 
-   head = insert(head, &data_0, 0);
+   insert(&head, &data_0, 0);
    int data_5 = 5;
-   head = insert(head, &data_5, 5);
-   head = insert(head, &data_4, 4);
+   insert(&head, &data_5, 5);
+   insert(&head, &data_4, 4);
    // list contains 0,1,2,3,4,4,5
    node = head;
    for (int i = 0; i < 6; i++) {
@@ -58,9 +60,9 @@ int main(int argn, char **args)
 	   }
    }
 
-   head = delete_node(head,4);
-   head = delete_node(head,5);
-   head = delete_node(head,0);
+   delete_node(&head,4);
+   delete_node(&head,5);
+   delete_node(&head,0);
    // list contains 1,2,3,4
 
    node = head;
@@ -75,14 +77,14 @@ int main(int argn, char **args)
    struct tree * tree = create_tree(&data, sizeof(int), sizeof(data)/sizeof(int), (Compare)cmp_int);
    //print_tree(tree, (Print)print_int);
    for (int i = 0; i < sizeof(data)/sizeof(int); i++)
-   	tree = tree_delete(tree, data + i);
+   	tree_delete(&tree, data + i);
    print_tree(tree, (Print)print_int);
-   tree = insert_node(tree, &data_5, (Compare)cmp_int);
-   tree = insert_node(tree, &data_4, (Compare)cmp_int);
-   tree = insert_node(tree, &data_0, (Compare)cmp_int);
-   tree = insert_node(tree, &data[0], (Compare)cmp_int);
-   tree = insert_node(tree, &data[1], (Compare)cmp_int);
-   tree = insert_node(tree, &data[2], (Compare)cmp_int);
+   insert_node(&tree, &data_5, (Compare)cmp_int);
+   insert_node(&tree, &data_4, (Compare)cmp_int);
+   insert_node(&tree, &data_0, (Compare)cmp_int);
+   insert_node(&tree, &data[0], (Compare)cmp_int);
+   insert_node(&tree, &data[1], (Compare)cmp_int);
+   insert_node(&tree, &data[2], (Compare)cmp_int);
    //print_tree(tree, (Print)print_int);
 
 
@@ -93,12 +95,12 @@ int main(int argn, char **args)
 	   node = node->next;
    }
 
-   tree = tree_delete(tree, &data_5);
-   tree = tree_delete(tree, &data_4);
-   tree = tree_delete(tree, &data_0);
-   tree = tree_delete(tree, &data[0]);
-   tree = tree_delete(tree, &data[1]);
-   tree = tree_delete(tree, &data[2]);
+   tree_delete(&tree, &data_5);
+   tree_delete(&tree, &data_4);
+   tree_delete(&tree, &data_0);
+   tree_delete(&tree, &data[0]);
+   tree_delete(&tree, &data[1]);
+   tree_delete(&tree, &data[2]);
 //print_tree(tree, (Print)print_int);
 
    tree = make_tree(head, (Compare)cmp_int);
@@ -120,6 +122,7 @@ int main(int argn, char **args)
    assert(+1 == vercmp(str3, str2));
    assert(-1 == vercmp(str4, str5));
    assert(-1 == vercmp(str5,str6));
+   assert(-1 == vercmp(str6,str7));
 
    int data1[] = {0,2,4,6,8,10};
    int data2[] = {0,1,4,5,7,7,10};
@@ -133,6 +136,16 @@ int main(int argn, char **args)
 	   assert(*(int *)(node->data) == merged[i]);
 	   node = node->next;
    }
+
+   int merged_[] = {0,1,2,4,5,6,7,8,10};
+   remove_duplicates(&merged_list, (Compare)cmp_int);
+   node = merged_list;
+   for (int i = 0; i < sizeof(merged_)/sizeof(int); i++) {
+	   //printf("%d\n", *(int*)node->data);
+	   assert(*(int *)(node->data) == merged_[i]);
+	   node = node->next;
+   }
+
 
 
    printf("Success!\n");
