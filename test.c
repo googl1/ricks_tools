@@ -73,7 +73,7 @@ int main(int argn, char **args)
 
    // binary tree tests
    struct tree * tree = create_tree(&data, sizeof(int), sizeof(data)/sizeof(int), (Compare)cmp_int);
-   print_tree(tree, (Print)print_int);
+   //print_tree(tree, (Print)print_int);
    for (int i = 0; i < sizeof(data)/sizeof(int); i++)
    	tree = tree_delete(tree, data + i);
    print_tree(tree, (Print)print_int);
@@ -83,13 +83,12 @@ int main(int argn, char **args)
    tree = insert_node(tree, &data[0], (Compare)cmp_int);
    tree = insert_node(tree, &data[1], (Compare)cmp_int);
    tree = insert_node(tree, &data[2], (Compare)cmp_int);
-   print_tree(tree, (Print)print_int);
+   //print_tree(tree, (Print)print_int);
 
 
    head = tolist(tree);
    node = head;
    for (int i = 0; i < 6; i++) {
-	   printf("%d\n", *(int *)node->data);
 	   assert(*(int *)(node->data) == i);
 	   node = node->next;
    }
@@ -100,14 +99,14 @@ int main(int argn, char **args)
    tree = tree_delete(tree, &data[0]);
    tree = tree_delete(tree, &data[1]);
    tree = tree_delete(tree, &data[2]);
-   print_tree(tree, (Print)print_int);
+//print_tree(tree, (Print)print_int);
 
    tree = make_tree(head, (Compare)cmp_int);
-   print_tree(tree, (Print)print_int);
+  // print_tree(tree, (Print)print_int);
 
    tree_delete_all(tree);
 
-   printf("Success!\n");
+   delete_list(head);
 
    char str1[] = "1.0.3\0";
    char str2[] = "2.10\0";
@@ -122,6 +121,20 @@ int main(int argn, char **args)
    assert(-1 == vercmp(str4, str5));
    assert(-1 == vercmp(str5,str6));
 
+   int data1[] = {0,2,4,6,8,10};
+   int data2[] = {0,1,4,5,7,7,10};
+   int merged[] = {0,0,1,2,4,4,5,6,7,7,8,10,10};
+   struct list *l1 = create_list(&data1,sizeof(int),6);
+   struct list *l2 = create_list(&data2, sizeof(int), 7);
+   struct list * merged_list = merge_sorted(l1,l2, (Compare)cmp_int);
 
+   node = merged_list;
+   for (int i = 0; i < sizeof(merged)/sizeof(int); i++) {
+	   assert(*(int *)(node->data) == merged[i]);
+	   node = node->next;
+   }
+
+
+   printf("Success!\n");
    return 0;
 }

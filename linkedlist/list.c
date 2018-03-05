@@ -41,6 +41,15 @@ struct list * reverse(struct list * list_element) {
 }
 
 struct list * append(struct list * head, void * data) {
+	if (head == NULL) {
+		//create list
+		head = (struct list *)malloc(sizeof(struct list));
+		head->data = data;
+		head->prev = NULL;
+		head->next = NULL;
+		len_list = 0;
+		return head;
+	}
 	len_list++;
 	struct list * tail = find_tail(head);
 	tail->next = (struct list *)malloc(sizeof(struct list));
@@ -164,4 +173,38 @@ void delete_list(struct list * head) {
 		return;
 	delete_list(head->next);
 	free(head);
+}
+
+struct list * merge_sorted(struct list * l1, struct list * l2, Compare cmp) {
+	if (l1 == NULL || l2 == NULL) {
+		printf("merge_sorted: received NULL ptr\n");
+		exit(0);
+	}
+	struct list * head = NULL;
+	while(l1 != NULL && l2 != NULL) {
+		if (cmp(l1->data,l2->data) == 0) {
+			// same data in both lists
+			head = append(head, l1->data);
+			head = append(head, l2->data);
+			l1 = l1->next;
+			l2 = l2->next;
+		}
+		else if (cmp(l1->data,l2->data) == -1) {
+			head = append(head, l1->data);
+			l1 = l1->next;
+		}
+		else {
+			head = append(head, l2->data);
+			l2 = l2->next;
+		}
+	}
+	while(l1 != NULL) {
+		head = append(head,l1->data);
+		l1 = l1->next;
+	}
+	while(l2 != NULL) {
+		head = append(head, l2->data);
+		l2 = l2->next;
+	}
+	return head;
 }
