@@ -45,9 +45,9 @@ int vercmp(char *v1, char *v2) {
 	return 0;
 }
 
-struct tree * create_tree(void * data, const int size, const int len, const Compare cmp) {
+struct tree * create_tree(void * data, const size_t size, const size_t len, const Compare cmp) {
 	struct tree * root = NULL;
-	for (int i = 0; i < len; i++)
+	for (size_t i = 0; i < len; i++)
 		insert_node(&root, (void *)data + i * size, cmp);
 	return root;
 }

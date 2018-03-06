@@ -18,7 +18,7 @@ typedef int (*Compare)(const void *, const void *);
 typedef void (*Print)(const void *);
 
 
-struct tree * create_tree(void * data, const int size, const int len, const Compare cmp);
+struct tree * create_tree(void * data, const size_t size, const size_t len, const Compare cmp);
 void insert_node(struct tree ** root, void * data, const Compare cmp);
 void tree_delete(struct tree ** root, void * data);
 void tree_delete_all(struct tree * root);

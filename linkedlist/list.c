@@ -10,14 +10,14 @@
 
 static char len_list;
 
-struct list * create_list(const void * data, const int size, const int len) {
+struct list * create_list(const void * data, const size_t size, const size_t len) {
 	len_list = len;
 	struct list * head = (struct list *)malloc(sizeof(struct list));
 	head->prev = NULL;
 	head->next = NULL;
 	head->data = (void *)data;
 	struct list * node = head;
-	for (int i = 1; i < len; i++) {
+	for (size_t i = 1; i < len; i++) {
 		struct list * tail = (struct list *)malloc(sizeof(struct list));
 		tail->prev = node;
 		tail->next = NULL;
@@ -115,9 +115,9 @@ void push(struct list ** head, const void * data) {
 	return;
 }
 
-void insert(struct list ** head, const void * data, int pos) {
+void insert(struct list ** head, const void * data, size_t pos) {
 	if (pos >= len_list+1) {
-		printf("insert: len_list shorter than pos=%d\n", pos);
+		printf("insert: len_list shorter than pos=%zu\n", pos);
 		exit(0);
 	}
 	if (pos == len_list) {
@@ -126,9 +126,9 @@ void insert(struct list ** head, const void * data, int pos) {
 	else if (pos > 0) {
 		len_list++;
 		struct list * node = *head;
-		for (int i = 0; i < pos-1; i++) {
+		for (size_t i = 0; i < pos-1; i++) {
 			if (node->next == NULL) {
-				printf("insert: list shorter than pos=%d\n", pos);
+				printf("insert: list shorter than pos=%zu\n", pos);
 				exit(0);
 			}
 			node = node->next;
@@ -150,9 +150,9 @@ void insert(struct list ** head, const void * data, int pos) {
 	}
 }
 
-void * delete_node(struct list ** head, int pos) {
+void * delete_node(struct list ** head, size_t pos) {
 	if (pos >= len_list) {
-		printf("delete_node: len_list shorter than pos=%d\n", pos);
+		printf("delete_node: len_list shorter than pos=%zu\n", pos);
 		exit(0);
 	}
 	void * data;
@@ -174,13 +174,13 @@ void * delete_node(struct list ** head, int pos) {
 	return data;
 }
 
-struct list * find(struct list * head, int pos) {
+struct list * find(struct list * head, size_t pos) {
 	if (pos >= len_list) {
-		printf("find: len_list shorter than pos=%d\n", pos);
+		printf("find: len_list shorter than pos=%zu\n", pos);
 		exit(0);
 	}
 	struct list * node = head;
-	for (int i = 0; i < pos; i++) {
+	for (size_t i = 0; i < pos; i++) {
 		node = node->next;
 	}
 	return node;

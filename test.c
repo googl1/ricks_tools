@@ -18,7 +18,7 @@ int main(int argn, char **args)
    struct list * head = create_list(&data, sizeof(int), sizeof(data)/sizeof(int));
 // list  contains 1,2,3
    node = head;
-   for (int i = 1; i < 4; i++) {
+   for (size_t i = 1; i < 4; i++) {
 	   assert(*(int *)(node->data) == i);
 	   node = node->next;
    }
@@ -40,7 +40,7 @@ int main(int argn, char **args)
    // list contains 1,2,3,4
 
    node = head;
-   for (int i = 1; i < 5; i++) {
+   for (size_t i = 1; i < 5; i++) {
 	   assert(*(int *)(node->data) == i);
 	   node = node->next;
    }
@@ -51,7 +51,7 @@ int main(int argn, char **args)
    insert(&head, &data_4, 4);
    // list contains 0,1,2,3,4,4,5
    node = head;
-   for (int i = 0; i < 6; i++) {
+   for (size_t i = 0; i < 6; i++) {
 	   assert(*(int *)(node->data) == i);
 	   node = node->next;
 	   if (i == 4) {
@@ -66,7 +66,7 @@ int main(int argn, char **args)
    // list contains 1,2,3,4
 
    node = head;
-   for (int i = 1; i < 5; i++) {
+   for (size_t i = 1; i < 5; i++) {
 	   assert(*(int *)(node->data) == i);
 	   node = node->next;
    }
@@ -76,7 +76,7 @@ int main(int argn, char **args)
    // binary tree tests
    struct tree * tree = create_tree(&data, sizeof(int), sizeof(data)/sizeof(int), (Compare)cmp_int);
    //print_tree(tree, (Print)print_int);
-   for (int i = 0; i < sizeof(data)/sizeof(int); i++)
+   for (size_t i = 0; i < sizeof(data)/sizeof(int); i++)
    	tree_delete(&tree, data + i);
    print_tree(tree, (Print)print_int);
    insert_node(&tree, &data_5, (Compare)cmp_int);
@@ -90,7 +90,7 @@ int main(int argn, char **args)
 
    head = tolist(tree);
    node = head;
-   for (int i = 0; i < 6; i++) {
+   for (size_t i = 0; i < 6; i++) {
 	   assert(*(int *)(node->data) == i);
 	   node = node->next;
    }
@@ -132,7 +132,7 @@ int main(int argn, char **args)
    struct list * merged_list = merge_sorted(l1,l2, (Compare)cmp_int);
 
    node = merged_list;
-   for (int i = 0; i < sizeof(merged)/sizeof(int); i++) {
+   for (size_t i = 0; i < sizeof(merged)/sizeof(int); i++) {
 	   assert(*(int *)(node->data) == merged[i]);
 	   node = node->next;
    }
@@ -140,7 +140,7 @@ int main(int argn, char **args)
    int merged_[] = {0,1,2,4,5,6,7,8,10};
    remove_duplicates(&merged_list, (Compare)cmp_int);
    node = merged_list;
-   for (int i = 0; i < sizeof(merged_)/sizeof(int); i++) {
+   for (size_t i = 0; i < sizeof(merged_)/sizeof(int); i++) {
 	   //printf("%d\n", *(int*)node->data);
 	   assert(*(int *)(node->data) == merged_[i]);
 	   node = node->next;
